@@ -44,9 +44,11 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       
       <div className="product-info pl-2">
-        <h3 className="product-title">{product.title}</h3>
-        <p className="product-category">{product.category}</p>
-        <p className="product-description">
+        <h3 title={product.title} className="product-title"> {product.title.length > 60 
+            ? `${product.title.substring(0, 60)}...` 
+            : product.title}</h3>
+        <p title={product.category} className="product-category">{product.category}</p>
+        <p title={product.description} className="product-description">
           {product.description.length > 80 
             ? `${product.description.substring(0, 80)}...` 
             : product.description}
