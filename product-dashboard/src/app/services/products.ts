@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Product, SortBy } from '../../types';
+import type { Product } from '../../types';
+
+type SortBy = 'title' | 'price' | 'rating' | 'asc' | 'desc' | 'price_asc' | 'price_desc';
 
 const baseUrl = 'https://fakestoreapi.com';
 
@@ -50,21 +52,19 @@ export const selectFilteredProducts = (products: Product[], filters: { category?
 
   // Sort products
   if (filters.sortBy) {
-    switch (filters.sortBy) {
-      case 'price_asc':
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case 'price_desc':
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        result.sort((a, b) => b.rating.rate - a.rating.rate);
-        break;
-      case 'title':
-        result.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      default:
-        break;
+    const sortBy = filters.sortBy as string; // Type assertion to handle all possible sort values
+    
+    if (sortBy === 'price' || sortBy === 'asc' || sortBy === 'price_asc') {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'desc' || sortBy === 'price_desc') {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sortBy === 'rating') {
+      result.sort((a, b) => b.rating.rate - a.rating.rate);
+    } else if (sortBy === 'title') {
+      result.sort((a, b) => a.title.localeCompare(b.title));
+    } else {
+      // Default to sorting by price ascending if sortBy is not recognized
+      result.sort((a, b) => a.price - b.price);
     }
   }
 

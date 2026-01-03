@@ -6,6 +6,7 @@ import ProductCard from "../../components/ProductCard";
 import "./ProductList.css";
 import ProductListHeader from "../../components/ProductListHeader";
 import { FaSpinner } from 'react-icons/fa';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const ProductList = () => {
     const dispatch = useAppDispatch();
@@ -13,7 +14,16 @@ const ProductList = () => {
     const { status } = useAppSelector((state: any) => state.products);
 
     useEffect(() => {
-        dispatch(fetchProducts());
+        const loadProducts = async () => {
+            try {
+                const resultAction = await dispatch(fetchProducts());
+                unwrapResult(resultAction);
+            } catch (err) {
+                console.error('Failed to load products:', err);
+            }
+        };
+        
+        loadProducts();
     }, [dispatch]);
 
     if (status === "loading") {

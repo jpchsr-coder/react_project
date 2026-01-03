@@ -16,7 +16,7 @@ interface ProductsState {
   status: "idle" | "loading" | "error";
   search: string;
   category: string;
-  sort: "asc" | "desc";
+  sort: 'asc' | 'desc';
 }
 
 const initialState: ProductsState = {
@@ -48,7 +48,7 @@ const productsSlice = createSlice({
     setCategory(state, action: PayloadAction<string>) {
       state.category = action.payload;
     },
-    setSort(state, action: PayloadAction<"asc" | "desc">) {
+    setSort(state, action: PayloadAction<'asc' | 'desc'>) {
       state.sort = action.payload;
     },
   },

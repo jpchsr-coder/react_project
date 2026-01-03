@@ -11,7 +11,9 @@ export interface Product {
   };
 }
 
-export type SortBy = 'price_asc' | 'price_desc' | 'rating' | 'title';
+export type SortBy = 'title' | 'price' | 'rating' | 'asc' | 'desc' | 'price_asc' | 'price_desc';
+
+export type SimpleSortBy = 'asc' | 'desc';
 
 export interface FiltersState {
   category: string;
