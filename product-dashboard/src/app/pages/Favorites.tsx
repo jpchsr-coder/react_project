@@ -1,12 +1,20 @@
-import { useAppSelector } from '../../app/hooks';
-import { selectFavorites } from '../../features/favorites/favoritesSlice';
-import ProductCard from '../../components/ProductCard';
+import { useEffect } from 'react';
+import { useAppSelector } from '@/app/hooks';
+import { selectFavorites } from '@/features/favorites/favoritesSlice';
+import { useFavoritesPersistence } from '@/features/favorites/useFavoritesPersistence';
+import ProductCard from '@/components/ProductCard';
 import { Link } from 'react-router-dom';
 import { FaHeartBroken } from 'react-icons/fa';
 import './Favorites.css';
 
 const Favorites = () => {
   const favorites = useAppSelector(selectFavorites);
+  const { saveFavorites } = useFavoritesPersistence();
+
+  // Save to localStorage whenever favorites change
+  useEffect(() => {
+    saveFavorites(favorites);
+  }, [favorites, saveFavorites]);
 
   if (favorites.length === 0) {
     return (

@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
-import type { Product } from "../features/products/productsSlice";
-import { FaStar, FaRegStar, FaHeart, FaRegHeart } from "react-icons/fa";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addToFavorites, removeFromFavorites } from "../features/favorites/favoritesSlice";
-import { selectIsFavorite } from "../features/favorites/favoritesSlice";
+import { Link } from 'react-router-dom';
+import type { Product } from '@/types';
+import { FaStar, FaRegStar, FaHeart, FaRegHeart } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { addToFavorites, removeFromFavorites } from '@/features/favorites/favoritesSlice';
+import { selectIsFavorite } from '@/features/favorites/favoritesSlice';
+// Remove unused import
 
 const ProductCard = ({ product }: { product: Product }) => {
   const dispatch = useAppDispatch();
@@ -11,14 +12,26 @@ const ProductCard = ({ product }: { product: Product }) => {
   const toggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    console.log('Toggling favorite for product:', product.id, 'Current state:', isFavorite);
+    
     if (isFavorite) {
+      console.log('Dispatching removeFromFavorites with ID:', product.id);
       dispatch(removeFromFavorites(product.id));
     } else {
-      dispatch(addToFavorites({ ...product, rating: 4 } as any));
+      console.log('Dispatching addToFavorites with product:', product);
+      const favoriteProduct = {
+        ...product,
+        rating: product.rating || { rate: 4, count: 100 },
+        category: product.category || 'uncategorized',
+        description: product.description || ''
+      };
+      console.log('Adding to favorites:', favoriteProduct);
+      dispatch(addToFavorites(favoriteProduct));
     }
   };
-  // Generate random rating between 3-5 for demonstration
-  const rating = Math.floor(Math.random() * 3) + 3;
+  // Use product rating or default to 4
+  const rating = product.rating?.rate || 4;
   
   console.log("isFavorite:", isFavorite, "product.id:", product.id);
   return (
