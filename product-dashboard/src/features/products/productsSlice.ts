@@ -59,9 +59,13 @@ const productsSlice = createSlice({
   },
 });
 
-// In your productsSlice.ts
-export const selectProductById = (state: any, productId: string) =>
-  state.products.items.find((product: Product) => product.id.toString() === productId);
+// Selector to find a product by ID
+export const selectProductById = (state: { products: ProductsState }, productId: string) => {
+  if (!productId) return undefined;
+  return state.products.items.find((product) => 
+    product.id.toString() === productId.toString()
+  );
+};
 
 export const { setSearch, setCategory, setSort } =
   productsSlice.actions;

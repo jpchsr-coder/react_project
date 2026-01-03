@@ -34,17 +34,35 @@ const ProductCard = ({ product }: { product: Product }) => {
   const rating = product.rating?.rate || 4;
   
   console.log("isFavorite:", isFavorite, "product.id:", product.id);
+  const handleCardClick = (e: React.MouseEvent) => {
+    // If the click was on the favorite button, don't navigate
+    if ((e.target as HTMLElement).closest('.favorite-button')) {
+      return;
+    }
+    // Otherwise, navigate to the product details
+    window.location.href = `/product/${product.id}`;
+  };
+
   return (
-    <div className="product-card !p-4">
-            <div className="product-image-container">
+    <div 
+      className="product-card !p-4 cursor-pointer"
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && handleCardClick(e as any)}
+    >
+      <div className="product-image-container">
         <img
           src={product.image}
           alt={product.title}
           className="product-image"
         />
         <button 
-          onClick={toggleFavorite}
-          className="favorite-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(e);
+          }}
+          className="favorite-button z-10"
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
         >
           {isFavorite ? (
@@ -79,12 +97,15 @@ const ProductCard = ({ product }: { product: Product }) => {
         
         <div className="product-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
-          <Link
-            to={`/product/${product.id}`}
-            className="view-details-btn"
-          >
-            View Details
-          </Link>
+          <button
+          className="view-details-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `/product/${product.id}`;
+          }}
+        >
+          View Details
+        </button>
         </div>
       </div>
     </div>

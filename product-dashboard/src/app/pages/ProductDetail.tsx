@@ -1,21 +1,60 @@
 // src/app/pages/ProductDetail.tsx
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@/app/hooks';
-import { selectProductById } from '@/features/products/productsSlice';
+import { selectProductById, fetchProducts } from '@/features/products/productsSlice';
 import { addToFavorites, removeFromFavorites, selectIsFavorite } from '@/features/favorites/favoritesSlice';
 import { FaStar, FaChevronRight, FaShoppingCart, FaTruck, FaCheck, FaHeart, FaRegHeart, FaChevronLeft } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const product = useAppSelector((state) => selectProductById(state, id || ''));
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   
-  const isFavorite = useAppSelector((state:any) => selectIsFavorite(Number(id))(state));
+  // Get the product from the store
+  const product = useAppSelector((state) => selectProductById(state, id || ''));
+  const isFavorite = useAppSelector((state) => selectIsFavorite(Number(id))(state));
   const [quantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Fetch products if not already loaded
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        // @ts-ignore - We need to properly type the dispatch
+        await dispatch(fetchProducts()).unwrap();
+      } catch (error) {
+        console.error('Failed to load products:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadProduct();
+  }, [dispatch, id]);
+  
+  // If still loading, show loading state
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading product details...</div>;
+  }
+  
+  // If no product found after loading
   if (!product) {
-    return <div>Product not found</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center p-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Product not found</h2>
+          <p className="mb-4">The product you're looking for doesn't exist or has been removed.</p>
+          <Link 
+            to="/" 
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+          >
+            Back to Products
+          </Link>
+        </div>
+      </div>
+    );
   }
   const toggleFavorite = () => {
     if (isFavorite) {
@@ -30,7 +69,7 @@ const ProductDetail = () => {
       setQuantity(newQuantity);
     }
   };
-
+ 
   if (!product) {
     return <div className="min-h-screen flex items-center justify-center p-8">
       <div className="text-center">
@@ -50,7 +89,7 @@ const ProductDetail = () => {
     <div className="product-detail-container">
      
       <div className="product-detail-content">
-         <button onClick={() => window.history.back()} className="back-button">
+         <button onClick={() => window.location.href = '/'} className="back-button">
         <FaChevronLeft className="mr-1 h-4 w-4 transform rotate-180" />
         Back to Products
       </button>

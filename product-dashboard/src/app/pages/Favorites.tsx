@@ -33,7 +33,7 @@ const Favorites = () => {
     <div className="favorites-container">
       <div className="favorites-header">
         <h1>My Favorites</h1>
-        <p>{favorites.length} {favorites.length === 1 ? 'item' : 'items'}</p>
+       
       </div>
       
       <div className="favorites-grid">
