@@ -1,18 +1,11 @@
 // src/app/pages/ProductDetail.tsx
 import { useParams, Link } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { selectProductById } from '../../features/products/productsSlice';
-import { addToFavorites, removeFromFavorites, selectIsFavorite } from '../../features/favorites/favoritesSlice';
+import { useAppSelector, useAppDispatch } from '@/app/hooks';
+import { selectProductById } from '@/features/products/productsSlice';
+import { addToFavorites, removeFromFavorites, selectIsFavorite } from '@/features/favorites/favoritesSlice';
 import { FaStar, FaChevronRight, FaShoppingCart, FaTruck, FaCheck, FaHeart, FaRegHeart, FaChevronLeft } from 'react-icons/fa';
 import { useState } from 'react';
 import './ProductDetail.css';
-
-const colors = [
-  { name: 'Black', class: 'bg-black' },
-  { name: 'Purple', class: 'bg-purple-600' },
-  { name: 'Blue', class: 'bg-blue-600' },
-  { name: 'Red', class: 'bg-red-600' },
-];
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();

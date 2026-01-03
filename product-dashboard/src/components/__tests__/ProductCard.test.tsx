@@ -3,8 +3,8 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { MemoryRouter } from 'react-router-dom';
 import ProductCard from '../ProductCard';
-import favoritesReducer from '../../../features/favorites/favoritesSlice';
-import type { Product } from '../../../features/products/productsSlice';
+import favoritesReducer from '@/features/favorites/favoritesSlice';
+import type { Product } from '@/types';
 import '@testing-library/jest-dom';
 
 // Mock the react-icons/fa module
@@ -44,6 +44,9 @@ describe('ProductCard', () => {
         },
       },
     });
+    
+    // Type assertion for the store state
+    type RootState = ReturnType<typeof store.getState>;
 
     return render(
       <MemoryRouter>
@@ -73,7 +76,7 @@ describe('ProductCard', () => {
     expect(screen.getByTestId('heart')).toBeInTheDocument();
   });
 
-  it('dispatches addToFavorites when clicking on outline heart', () => {
+  it('adds product to favorites when heart icon is clicked', () => {
     const store = configureStore({
       reducer: {
         favorites: favoritesReducer,
@@ -89,11 +92,11 @@ describe('ProductCard', () => {
     );
 
     fireEvent.click(getByTestId('reg-heart'));
-    const actions = store.getState().favorites.favorites;
-    expect(actions.some((p: Product) => p.id === mockProduct.id)).toBe(true);
+    const state = store.getState();
+    expect(state.favorites.favorites.some((p: Product) => p.id === mockProduct.id)).toBe(true);
   });
 
-  it('dispatches removeFromFavorites when clicking on filled heart', () => {
+  it('removes product from favorites when filled heart icon is clicked', () => {
     const store = configureStore({
       reducer: {
         favorites: favoritesReducer,
@@ -114,8 +117,8 @@ describe('ProductCard', () => {
     );
 
     fireEvent.click(getByTestId('heart'));
-    const actions = store.getState().favorites.favorites;
-    expect(actions.some((p: Product) => p.id === mockProduct.id)).toBe(false);
+    const state = store.getState();
+    expect(state.favorites.favorites.some((p: Product) => p.id === mockProduct.id)).toBe(false);
   });
 
   it('displays product title', () => {

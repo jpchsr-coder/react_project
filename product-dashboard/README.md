@@ -1,33 +1,118 @@
-# React + TypeScript + Vite
+# Product Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce product dashboard built with React, TypeScript, Redux Toolkit, and Vite. This application showcases a responsive product listing with filtering, sorting, and favorites functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Product Listing**: View all available products with images, prices, and ratings
+- **Search & Filter**: Search products by name and filter by category
+- **Sorting**: Sort products by price, rating, and title
+- **Favorites**: Add/remove products to/from favorites
+- **Product Details**: Detailed view for each product
+- **Responsive Design**: Works on desktop and mobile devices
+- **Type Safety**: Full TypeScript support
+- **Testing**: Comprehensive test coverage with Jest and React Testing Library
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React 18, TypeScript, Vite
+- **State Management**: Redux Toolkit, React-Redux
+- **Routing**: React Router DOM
+- **Styling**: CSS Modules
+- **Testing**: Jest, React Testing Library
+- **Build Tool**: Vite
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```
+src/
+├── app/
+│   ├── pages/
+│   │   ├── ProductList.tsx      # Main product listing page
+│   │   ├── ProductDetail.tsx    # Product details page
+│   │   └── Favorites.tsx        # Favorites page
+│   ├── store.ts                 # Redux store configuration
+│   └── hooks.ts                 # Custom React hooks
+├── components/
+│   ├── ProductCard.tsx          # Product card component
+│   ├── ProductListHeader.tsx    # Header with search and filter
+│   ├── FilterBar.tsx            # Filter and sort controls
+│   └── SearchBar.tsx            # Search input component
+├── features/
+│   ├── products/
+│   │   ├── productsSlice.ts     # Products Redux slice
+│   │   └── productsSelectors.ts # Products selectors
+│   └── favorites/
+│       └── favoritesSlice.ts    # Favorites Redux slice
+└── types/
+    └── index.ts                 # TypeScript type definitions
+```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd product-dashboard
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Generate test coverage report
+npm run test:coverage
+```
+
+## Available Scripts
+
+- `dev`: Start development server
+- `build`: Build for production
+- `preview`: Preview production build
+- `test`: Run tests
+- `test:coverage`: Run tests with coverage report
+- `lint`: Run ESLint
+- `typecheck`: Run TypeScript type checking
+
+## Contributing
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
       tseslint.configs.stylisticTypeChecked,
 
       // Other configs...
